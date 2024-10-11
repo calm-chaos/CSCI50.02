@@ -1,0 +1,37 @@
+* Corpuz, Jianna Marie
+* Gregorio, Sophia Avielle
+* Tan, Patricia 
+
+
+.include "myHeader.jsim"
+
+.subckt add32 a[31:0] b[31:0] c_in0 sum[31:0] c_out[31:30]
+
+    Xfa a[31:0] b[31:0] c_out[30:0] c_in0 sum[31:0] c_out[31:0] fa
+
+.ends
+
+
+* Test Case A
+Wtc1a a[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0x00000000 0x55555555 0x00000000 0x55555555 0xFFFFFFFF 0xAAAAAAAA 0x00000000 0xAAAAAAAA 0x00000001 0xFFFFFFFF
+
+Wtc1b b[31:0] nrz(0, 5, 20ns, 0ns, 0.001ns, 0.001ns)
++ 0x00000000 0x00000000 0x55555555 0x55555555 0xFFFFFFFF 0x00000000 0xAAAAAAAA 0xAAAAAAAA 0xFFFFFFFF 0x00000001
+
+Xsum a[31:0] b[31:0] 0 sum[31:0] c31 c30 add32
+Xsum1 a[63:32] b[63:32] c31 sum[63:32] c63 c62 add32
+
+.tran 200ns
+.plot a[31:0]
+.plot b[31:0]
+.plot sum[31:0]
+
+
+* 3. There will be a long transition delay for the last two test cases (i and j), unlike the other 8 cases. Explain this.
+* The primary reason as to why there is a long transition delay for the last two test cases (i and j) is that 
+* all of the bits in front of/to the left of the Least Significant Bit must wait for the carry_out from the rightmost bit. 
+* The transition delay thus corresponds to the wait time for the carry_out from the Least Significant Bit to propagate through
+* all bits to reach the Most Significant Bit. Although Test Case H is similar to Test Cases I and J in that they both have an 
+* overflow, there is significantly less transition delay as all of its carry_outs are already 1, and each bit does not need to rely
+* or wait on the carry_out of its rightmost bit.

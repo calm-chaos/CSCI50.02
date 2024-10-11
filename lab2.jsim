@@ -1,0 +1,21 @@
+*Corpuz, Jianna Marie
+*Gregorio, Sophia Avielle
+*Tan, Patricia
+
+.include "myHeader.jsim"
+
+Xnandimp clk1 clk2 clk3 clk4 clk5 clk6 clk7 OUT fx
+
+XfullAdder clk5 clk6 clk7 sum carry fa
+
+.tran 640ns
+.plot clk1
+.plot clk2
+.plot clk3
+.plot clk4
+.plot clk5
+.plot clk6
+.plot clk7
+.plot OUT
+.plot sum
+.plot carry
