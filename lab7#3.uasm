@@ -1,0 +1,59 @@
+| 3. XOR Cipher with a Repeating Key
+.include beta.uasm
+
+            LD(R4, DATA, R1)    | R1 = key; R4 = array counter
+            ADDC(R4, 4, R4)     | Advance to next int 
+            LD(R4, DATA, R2)    | R2 = array length 
+
+whileLoop:  CMPLT(R0, R2, R3)   | R0 = index i 
+            BF(R3, done)        | If i >= length, go to done
+            ADDC(R4, 4, R4)     | Advance to next int 
+            LD(R4, DATA, R5)    | R5 = memory[R4 + DATA]
+            XOR(R1, R5, R5)     | R5 = key ^ R5
+            ST(R5, DATA, R4)    | memory[DATA + R4] = R5
+
+            ADDC(R0, 1, R0)     | Increment index i 
+            BR(whileLoop)
+
+done:       HALT()
+
+DATA: 
+LONG(42)    | 32-bit Key
+LONG(5)     | Array/Plain Text's Length
+LONG(3)
+LONG(-5)
+LONG(12)
+LONG(-14)
+LONG(1)
+
+
+
+
+
+
+
+
+| LD(i, R0)
+| LD(k, R1)
+| LD(l, R2)
+| whileLoop: 
+| CMPLT(R0, R2, R3)
+| BF(R3, done)
+| MULC(R0, 4, R4)
+| LD(R4, arr, R5)
+| XOR(R1, R5, R5)
+| ST(R5, arr, R4)
+
+| ADDC(R0, 1, R0)
+| BR(whileLoop)
+| done: 
+| HALT()
+
+
+
+
+| .=0x200
+| i: LONG(0)
+| k: LONG(42)
+| l: LONG(5)
+| arr: LONG(3) LONG(-5) LONG(12) LONG(-14) LONG(1) 
